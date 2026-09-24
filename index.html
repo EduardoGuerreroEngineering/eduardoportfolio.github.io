@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171b19">
+  <title>Eduardo Guerrero | Engineering Portfolio</title>
+  <meta name="description" content="Eduardo Guerrero’s engineering portfolio: BREx project leadership, sensor fusion, hands-on prototyping, programming, and on-the-fly debugging across robotic and electronic systems.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23171b19'/%3E%3Cpath d='M18 17h29v7H26v5h17v7H26v5h21v7H18z' fill='%23d6f75b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="identity" href="#top" aria-label="Eduardo Guerrero, back to top"><span class="monogram" aria-hidden="true">eg<span>.</span></span><span>Eduardo Guerrero</span></a>
+    <nav aria-label="Main navigation"><a href="#projects">Projects</a><a href="#about">About</a><a class="nav-pdf" href="assets/Eduardo-Guerrero-Engineering-Portfolio.pdf" target="_blank" rel="noopener">Portfolio PDF <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="tiny-cross" aria-hidden="true">+</span> Engineering portfolio</p>
+        <h1 id="hero-title">Robotics &amp;<br>electronic<br><span>systems.</span></h1>
+        <p class="hero-intro">I’m Eduardo Guerrero. I build, integrate, and troubleshoot robotic and electronic systems, with a focus on sensor fusion and on-the-fly debugging.</p>
+        <a class="button" href="#projects">Explore my work <span aria-hidden="true">↓</span></a>
+      </div>
+      <figure class="hero-visual">
+        <div class="hero-image-wrap"><img src="assets/robot-electronics.webp" width="1800" height="1350" alt="Onboard electronics of the autonomous robot, including the computing platform, motor control boards, and wiring" fetchpriority="high"><span class="image-index">PROJECT 01 / ROBOTICS</span></div>
+        <figcaption><span>Autonomous localization</span><span>ROS2 · Sensor fusion</span></figcaption>
+      </figure>
+      <div class="hero-bottom"><span>Project leadership. Hands-on builds. Real-time problem solving.</span><span class="mono">04 PROJECTS <span aria-hidden="true">/</span> HARDWARE + SOFTWARE</span></div>
+    </section>
+
+    <section class="projects section-wrap" id="projects" aria-labelledby="projects-title">
+      <div class="section-heading"><div><p class="eyebrow">Selected work</p><h2 id="projects-title">Built. Tested. Refined.</h2></div><p>My contributions.<br>The systems we built together.</p></div>
+
+      <article class="project featured" id="autonomous-localization" aria-labelledby="ros-title">
+        <div class="project-topline"><span class="project-number">01</span><span class="eyebrow">BREx · Senior team project</span></div>
+        <div class="feature-body">
+          <div class="project-copy"><h3 id="ros-title">Giving a robot<br>a sense of place.</h3><p class="project-formal-title">BREx Friesian · Autonomous localization &amp; route replay</p><p>Combining GPS, IMU, and wheel odometry to estimate the iHerb robot’s position and replay routes across the Cal Poly Pomona campus.</p><div class="contribution"><span class="eyebrow">My role</span><h4>Project lead · Sensor fusion</h4><p>I led the project, with my main technical work focused on sensor fusion and localization. I also helped across the other subsystems, supporting integration and troubleshooting as the team brought the robot together.</p></div><div class="tags"><span>ROS2</span><span>Extended Kalman filter</span><span>Nav2</span><span>Jetson Orin</span></div>
+            <div class="result"><span class="eyebrow">Team outcome</span><p>Outdoor localization, waypoint recording, and autonomous route replay—without a base station.</p></div>
+          </div>
+          <div class="feature-media"><img src="assets/robot-electronics.webp" width="1800" height="1350" alt="Integrated electronics aboard the autonomous robot" loading="lazy"><div class="media-caption"><span>Integrated robot hardware</span><span class="mono">GPS + IMU + ODOMETRY</span></div></div>
+        </div>
+        <details class="project-details"><summary><span>Inside the project</span><span class="detail-toggle" aria-hidden="true"></span></summary>
+          <div class="detail-content">
+            <div><h4>My focus: a usable position estimate</h4><p>GPS noise, IMU drift, and wheel-odometry error made each sensor insufficient on its own. My sensor fusion work brought these inputs into ROS2’s <code>robot_localization</code> Extended Kalman Filter to estimate position, velocity, and orientation.</p><p>The Xsens MTi-680G already filters its inertial and GNSS measurements onboard. The robot-level filter combines that sensor data with wheel feedback. The navigation notes also flag overlapping Xsens measurements as a consideration when tuning covariance and investigating GPS jumps.</p></div>
+            <div><h4>From global coordinates to a saved route</h4><p><code>navsat_transform_node</code> converts GNSS coordinates into a local frame for navigation. A manual datum supported indoor checks when live satellite data was unavailable.</p><p>During a manual drive, the recorder saved map-frame position and heading in a YAML file. Nav2 used the saved route and live localization estimate to guide autonomous replay.</p></div>
+            <div class="debug-story"><p class="eyebrow">Debugging during testing</p><h4>When the planning area became the limit.</h4><p>Outdoor replay ran into the bounds of a fixed planning region. The team changed to a rolling costmap and an incremental follower that sent smaller waypoint goals one at a time. Starting near the closest saved waypoint also made route recovery more flexible.</p><p>Within my localization work, testing included checking GNSS, odometry, filtered odometry, and coordinate transforms while the robot moved. This connected sensor behavior to what the navigation system was actually receiving.</p></div>
+            <div><h4>Understanding the full control loop</h4><p>Nav2’s velocity commands were converted into virtual joystick input so autonomous and manual driving could share the existing motor-control path. Wheel feedback then returned to the localization system, closing the loop.</p><p>As project lead, I supported work across the system. The wider team’s work included the wiring board, motor-control architecture, and perception pipeline.</p></div>
+            <figure class="detail-figure"><img src="assets/navigation-output.webp" width="1719" height="599" alt="ROS2 terminal output reporting waypoint navigation and goal completion" loading="lazy"><figcaption>Waypoint navigation output. The senior project report documents rolling-costmap and incremental route-following tests; the navigation notes also describe a multi-pose replay path.</figcaption></figure>
+          </div>
+        </details>
+        <div class="project-documents" aria-label="BREx project documents"><span class="eyebrow">Project documents</span><a href="assets/BREx-Friesian-Senior-Project-Report.pdf" target="_blank" rel="noopener">Team report <span>PDF · 41 pages ↗</span></a><a href="assets/BREx-Sensor-Fusion-and-Navigation-Notes.pdf" target="_blank" rel="noopener">Sensor fusion &amp; navigation notes <span>PDF · 7 pages ↗</span></a></div>
+      </article>
+
+      <div class="project-grid">
+        <article class="project standard" id="tilt-control" aria-labelledby="tilt-title">
+          <div class="project-topline"><span class="project-number">02</span><span class="eyebrow">Feedback control · Team project</span></div>
+          <figure class="card-media tilt-media"><img src="assets/tilt-control.webp" width="1800" height="1350" alt="Servo-driven tilt mechanism with an ultrasonic sensor and a lever arm for balancing a marble" loading="lazy"></figure>
+          <div class="project-copy"><h3 id="tilt-title">Finding the balance.</h3><p class="project-formal-title">Half Tilt · Single-axis ball balancing</p><p>An Arduino-controlled lever uses ultrasonic distance feedback and a PID controller to balance a marble.</p><div class="contribution"><span class="eyebrow">My role</span><h4>Assembly, prototyping, programming &amp; debugging</h4><p>I helped assemble and prototype the mechanism, co-developed the control code, and worked through hardware and software issues during live testing.</p></div><div class="tags"><span>Arduino UNO</span><span>PID control</span><span>HC-SR04 sensor</span><span>MATLAB</span></div><div class="result"><span class="eyebrow">Team outcome</span><p>A working ball-balancing prototype, with mechanical alignment and close-range sensing limits identified through testing.</p></div></div>
+          <details class="project-details"><summary><span>Inside the project</span><span class="detail-toggle" aria-hidden="true"></span></summary><div class="detail-content">
+            <div><h4>Building and programming the feedback loop</h4><p>The prototype paired an Arduino UNO R3, an HC-SR04 ultrasonic sensor, and a 9G servo. Christian Trujillo and I shared the coding work. We moved from a sensor-response test to a reference PID example adapted for our sensor and mechanism, then refined the implementation during testing.</p><p>Serial Monitor output exposed the measured distance and commanded servo angle during debugging. I also worked on the MATLAB transfer-function analysis to examine the modeled closed-loop response.</p></div>
+            <div class="debug-story"><p class="eyebrow">Debugging during testing</p><h4>Tracing a stalled servo back to the load.</h4><p>The servo struggled to lift the wooden lever. The team first tried code adjustments, then reduced the lever’s mass, reattached the assembly, and retuned the control code for the changed mechanism.</p><p>This was the kind of hands-on debugging I contributed to: testing the prototype, working across assembly and code, and adapting as the physical behavior changed.</p></div>
+            <div><h4>What the tests showed</h4><p>The marble could balance on the lever, but it settled off-center. Uneven motor alignment limited rotation on one side, and the sensor struggled when the marble came too close. The report records these remaining issues along with the successful balancing behavior.</p></div>
+          </div></details>
+          <div class="project-documents" aria-label="Half Tilt project document"><span class="eyebrow">Project document</span><a href="assets/Half-Tilt-Control-System-Team-Report.pdf" target="_blank" rel="noopener">Team report <span>PDF · 24 pages ↗</span></a></div>
+        </article>
+
+        <article class="project standard" id="fpga-game" aria-labelledby="fpga-title">
+          <div class="project-topline"><span class="project-number">03</span><span class="eyebrow">Digital systems</span></div>
+          <figure class="card-media diagram-media"><img src="assets/fpga-diagram.webp" width="1255" height="547" alt="Duck Hunt FPGA architecture showing light sensor inputs, game state logic, sprite lookup tables, memory, clocks, and VGA output" loading="lazy"></figure>
+          <div class="project-copy"><h3 id="fpga-title">From logic to gameplay.</h3><p class="project-formal-title">FPGA-based Duck Hunt</p><p>A game system combining VGA output, sprite rendering, game-state logic, and light-sensor hit detection on a Zybo board.</p><div class="tags"><span>FPGA</span><span>VGA graphics</span><span>State machines</span></div><div class="result"><span class="eyebrow">The outcome</span><p>A working game state with a moving white target and an LED that confirmed successful hits.</p></div></div>
+          <details class="project-details"><summary><span>Inside the project</span><span class="detail-toggle" aria-hidden="true"></span></summary><div class="detail-content"><div><h4>The challenge</h4><p>Graphics, game logic, and real-time sensor input had to stay synchronized. Accurate light-sensor detection on the moving target required careful timing and clock management.</p></div><div><h4>The approach</h4><p>The design separated graphics, memory, input processing, and game logic into modules. Lookup tables stored sprite data, while a finite state machine managed game transitions. A purple LED on the Zybo indicated a registered hit.</p></div></div></details>
+        </article>
+      </div>
+
+      <article class="project amplifier" id="guitar-amplifier" aria-labelledby="amp-title">
+        <div class="project-topline"><span class="project-number">04</span><span class="eyebrow">PCB design · Team project</span></div>
+        <div class="amp-body"><div class="amplifier-media"><img class="amp-photo" src="assets/guitar-amplifier.webp" width="795" height="759" alt="Finished guitar amplifier in a custom 3D-printed enclosure with external controls" loading="lazy"><img class="pcb-photo" src="assets/amplifier-pcb.webp" width="603" height="943" alt="Altium PCB layout for the guitar amplifier" loading="lazy"></div><div class="project-copy"><h3 id="amp-title">A circuit you can hear.</h3><p class="project-formal-title">Custom guitar amplifier</p><p>A breadboard prototype developed into a manufactured PCB and custom enclosure, using an LM386 audio amplifier to drive an 8-ohm speaker from a 9V supply.</p><div class="contribution"><span class="eyebrow">Collaboration</span><h4>Built with Gerardo Rodriguez</h4><p>A shared project covering schematic design, PCB layout, enclosure design, and physical assembly.</p></div><div class="tags"><span>Altium Designer</span><span>LM386</span><span>Fusion 360</span><span>PCB fabrication</span></div><div class="result"><span class="eyebrow">Team outcome</span><p>A functional guitar amplifier with adjustable gain and volume, housed in a custom 3D-printed enclosure.</p></div></div></div>
+        <details class="project-details"><summary><span>Inside the project</span><span class="detail-toggle" aria-hidden="true"></span></summary><div class="detail-content">
+          <div><h4>From prototype to manufactured board</h4><p>Our existing circuit worked, but its wiring was difficult to organize. We transferred it into Altium Designer, selected compatible component footprints, checked connections and orientation, and ordered the manufactured PCB from JLCPCB.</p><p>Design review caught an LED orientation error before fabrication. Terminal blocks let us place the speaker, audio jack, and potentiometers where they needed to sit in the enclosure.</p></div>
+          <div><h4>Making the electronics fit</h4><p>The enclosure was designed in Fusion 360 around the PCB, speaker, and controls. Board placement and screw-terminal connections made wiring more manageable and helped integrate the electrical and mechanical parts into a working amplifier.</p></div>
+          <figure class="report-figure schematic"><a href="assets/amplifier-schematic.webp" target="_blank" rel="noopener" aria-label="Open the amplifier schematic at full size"><img src="assets/amplifier-schematic.webp" width="1800" height="975" alt="Altium schematic of the team’s LM386 guitar amplifier circuit" loading="lazy"></a><figcaption>Team schematic from the amplifier report. Select the image for full size.</figcaption></figure>
+          <figure class="report-figure cad"><img src="assets/amplifier-enclosure-cad.webp" width="1037" height="766" alt="Fusion 360 enclosure model with mounting points and openings for the speaker and controls" loading="lazy"><figcaption>Fusion 360 enclosure design from the team report.</figcaption></figure>
+        </div></details>
+        <div class="project-documents" aria-label="Guitar amplifier project document"><span class="eyebrow">Project document</span><a href="assets/Guitar-Amplifier-PCB-Team-Report.pdf" target="_blank" rel="noopener">Team report <span>PDF · 12 pages ↗</span></a></div>
+      </article>
+    </section>
+
+    <section class="about section-wrap" id="about" aria-labelledby="about-title"><div class="about-label"><p class="eyebrow">About the engineer</p><span class="about-mark" aria-hidden="true">eg.</span></div><div class="about-copy"><h2 id="about-title">Hands on.<br>Across the system.</h2><p>My work connects sensors, software, electronics, and the mechanics they control. As the BREx project lead, I focused on sensor fusion while helping the team work through integration across the robot.</p><div class="debugging-strength"><p class="eyebrow">A particular strength</p><h3>On-the-fly debugging.</h3><p>I’m at my best when a prototype needs troubleshooting during a test. I connect what the hardware is doing with sensor readings and code, test a change, and check the response. Moving between assembly, programming, and system behavior is one of my strongest skills.</p></div><p>That hands-on approach carries through my work: prototype, test, trace the issue, and refine the system with the team.</p><a class="text-link" href="assets/Eduardo-Guerrero-Engineering-Portfolio.pdf" download="Eduardo-Guerrero-Engineering-Portfolio.pdf">Download the original portfolio <span aria-hidden="true">↓</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="footer-top"><div><p class="eyebrow">Get in touch</p><h2>Eduardo Guerrero</h2></div><div class="contact-links"><a href="mailto:andrew_owner123@outlook.com">andrew_owner123@outlook.com <span aria-hidden="true">↗</span></a></div></div><div class="footer-bottom"><span>Robotics · Control · Electronic systems</span><a href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
+</body>
+</html>
